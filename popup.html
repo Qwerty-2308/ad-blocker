@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ad Blocker</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🛡️ Ad Blocker</h1>
+      <div class="status" id="status">
+        <span class="status-indicator" id="statusIndicator"></span>
+        <span class="status-text" id="statusText">Active</span>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-value" id="adsBlocked">0</div>
+        <div class="stat-label">Ads Blocked</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="sitesProtected">0</div>
+        <div class="stat-label">Sites Protected</div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <label class="toggle-switch">
+        <input type="checkbox" id="toggleSwitch" checked>
+        <span class="slider"></span>
+      </label>
+      <span class="toggle-label">Enable Ad Blocking</span>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" id="refreshBtn">Refresh Stats</button>
+      <button class="btn btn-secondary" id="resetBtn">Reset Stats</button>
+    </div>
+
+    <div class="footer">
+      <p>Protecting your browsing experience</p>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+
+</html>

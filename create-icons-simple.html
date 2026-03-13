@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Extension Icons</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f5f5f5;
+      max-width: 600px;
+      margin: 50px auto;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #667eea;
+      margin-bottom: 20px;
+    }
+    .instructions {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 5px;
+    }
+    button:hover {
+      background: #5568d3;
+    }
+    .icon-preview {
+      margin: 20px 0;
+      text-align: center;
+    }
+    canvas {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🛡️ Create Extension Icons</h1>
+    <div class="instructions">
+      <p><strong>Quick Setup:</strong></p>
+      <p>Click the button below to automatically create and download all three icon sizes. Then save them to the <code>icons</code> folder in your extension directory.</p>
+      <p><strong>Required files:</strong></p>
+      <ul>
+        <li>icon16.png (16x16 pixels)</li>
+        <li>icon48.png (48x48 pixels)</li>
+        <li>icon128.png (128x128 pixels)</li>
+      </ul>
+    </div>
+    
+    <div class="icon-preview">
+      <canvas id="canvas16" width="16" height="16"></canvas>
+      <canvas id="canvas48" width="48" height="48"></canvas>
+      <canvas id="canvas128" width="128" height="128"></canvas>
+    </div>
+    
+    <div style="text-align: center;">
+      <button onclick="createAllIcons()">Create & Download All Icons</button>
+    </div>
+  </div>
+
+  <script>
+    function drawShieldIcon(canvas, size) {
+      const ctx = canvas.getContext('2d');
+      
+      // Clear canvas
+      ctx.clearRect(0, 0, size, size);
+      
+      // Background gradient
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, '#667eea');
+      gradient.addColorStop(1, '#764ba2');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, size, size);
+      
+      // Draw shield shape
+      ctx.fillStyle = 'white';
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = Math.max(1, size / 32);
+      
+      const centerX = size / 2;
+      const centerY = size / 2;
+      const shieldWidth = size * 0.5;
+      const shieldHeight = size * 0.6;
+      
+      ctx.beginPath();
+      // Shield top curve
+      ctx.moveTo(centerX, centerY - shieldHeight * 0.4);
+      ctx.quadraticCurveTo(
+        centerX - shieldWidth * 0.5,
+        centerY - shieldHeight * 0.2,
+        centerX - shieldWidth * 0.5,
+        centerY
+      );
+      // Left side
+      ctx.lineTo(centerX - shieldWidth * 0.5, centerY + shieldHeight * 0.3);
+      // Bottom left curve
+      ctx.quadraticCurveTo(
+        centerX - shieldWidth * 0.2,
+        centerY + shieldHeight * 0.4,
+        centerX,
+        centerY + shieldHeight * 0.5
+      );
+      // Bottom right curve
+      ctx.quadraticCurveTo(
+        centerX + shieldWidth * 0.2,
+        centerY + shieldHeight * 0.4,
+        centerX + shieldWidth * 0.5,
+        centerY + shieldHeight * 0.3
+      );
+      // Right side
+      ctx.lineTo(centerX + shieldWidth * 0.5, centerY);
+      // Top right curve
+      ctx.quadraticCurveTo(
+        centerX + shieldWidth * 0.5,
+        centerY - shieldHeight * 0.2,
+        centerX,
+        centerY - shieldHeight * 0.4
+      );
+      ctx.closePath();
+      ctx.fill();
+      
+      // Draw checkmark
+      ctx.strokeStyle = '#667eea';
+      ctx.lineWidth = Math.max(2, size / 16);
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      
+      ctx.beginPath();
+      ctx.moveTo(centerX - shieldWidth * 0.15, centerY - shieldHeight * 0.05);
+      ctx.lineTo(centerX - shieldWidth * 0.05, centerY + shieldHeight * 0.05);
+      ctx.lineTo(centerX + shieldWidth * 0.15, centerY - shieldHeight * 0.15);
+      ctx.stroke();
+    }
+    
+    function downloadIcon(canvas, filename) {
+      canvas.toBlob((blob) => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 'image/png');
+    }
+    
+    function createAllIcons() {
+      const sizes = [16, 48, 128];
+      const canvases = sizes.map(size => document.getElementById(`canvas${size}`));
+      
+      // Draw all icons
+      canvases.forEach((canvas, index) => {
+        drawShieldIcon(canvas, sizes[index]);
+      });
+      
+      // Download all icons with a small delay between each
+      sizes.forEach((size, index) => {
+        setTimeout(() => {
+          const canvas = document.getElementById(`canvas${size}`);
+          downloadIcon(canvas, `icon${size}.png`);
+        }, index * 300);
+      });
+      
+      alert('Icons created! Check your downloads folder and move them to the icons/ folder.');
+    }
+    
+    // Draw icons on load
+    window.onload = function() {
+      drawShieldIcon(document.getElementById('canvas16'), 16);
+      drawShieldIcon(document.getElementById('canvas48'), 48);
+      drawShieldIcon(document.getElementById('canvas128'), 128);
+    };
+  </script>
+</body>
+</html>
+
