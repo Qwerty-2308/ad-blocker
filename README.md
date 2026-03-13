@@ -46,6 +46,15 @@ Intercepts and blocks requests to known ad domains using:
 5. Click "Load unpacked"
 6. Select the ad blocker directory
 
+> ⚠️ **Important:** The `gemini-cli` folder **must** be cloned inside this repository's root directory for the extension to work properly. The final structure should look like:
+> ```
+> ad-blocker/
+> ├── gemini-cli/    ← cloned here
+> ├── manifest.json
+> ├── content.js
+> └── ...
+> ```
+
 ## 🎯 Usage
 
 1. Click the extension icon to open the popup
