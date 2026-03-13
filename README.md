@@ -37,10 +37,14 @@ Intercepts and blocks requests to known ad domains using:
 ## 📦 Installation
 
 1. Clone or download this repository
-2. Open Chrome and navigate to `chrome://extensions/`
-3. Enable "Developer mode" in the top right
-4. Click "Load unpacked"
-5. Select the ad blocker directory
+2. Clone the [Gemini CLI](https://github.com/google-gemini/gemini-cli) repo inside the project directory — this is required for the extension to run fully offline:
+   ```bash
+   git clone https://github.com/google-gemini/gemini-cli.git
+   ```
+3. Open Chrome and navigate to `chrome://extensions/`
+4. Enable "Developer mode" in the top right
+5. Click "Load unpacked"
+6. Select the ad blocker directory
 
 ## 🎯 Usage
 
